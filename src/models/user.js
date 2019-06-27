@@ -1,6 +1,7 @@
 const log = console.log
 
 const mongoose = require('mongoose')
+const v = require('validator')
 
 
 const userSchema = new mongoose.Schema({
@@ -11,7 +12,14 @@ const userSchema = new mongoose.Schema({
     },
     email: {
         type: String,
-        trim: true
+        trim: true,
+        lowercase: true,
+        unique: true,
+        validate(value) {
+            if (!this.v.isEmail(value)) {
+                throw new Error('Invalid email format')
+            }
+        }
     }
 }, {
     timestamps: true
