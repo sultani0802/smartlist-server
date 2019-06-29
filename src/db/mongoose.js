@@ -16,7 +16,7 @@ const mongoose = require('mongoose')
  *      Database URL:   The URL to our database
  *      Options object: Customization for our mongoDB database
  */
-mongoose.connect('mongodb://127.0.0.1:27017/smartlist-api', {
+mongoose.connect(process.env.MONGODB_URL, {
     useNewUrlParser: true,
     useCreateIndex: true,
     useFindAndModify: false,    // Removes deprecation warning for                                                  Model.findByIdAndUpdate()

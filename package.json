@@ -11,10 +11,12 @@
     "nodemon": "^1.19.1",
     "validator": "^11.0.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "env-cmd": "^9.0.3"
+  },
   "scripts": {
     "start": "node src/index.js",
-    "dev": "nodemon src/index.js"
+    "dev": "env-cmd -f ./config/dev.env nodemon src/index.js"
   },
   "repository": {
     "type": "git",
