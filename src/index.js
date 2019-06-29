@@ -2,6 +2,7 @@ const log = console.log
 
 const express = require('express')
 
+const userRouter = require('./routers/userRouter')
 
 // Run database connection
 require('./db/mongoose')
@@ -21,14 +22,4 @@ app.listen(PORT, () => {
     log('Server is running on port ', PORT)
 })  
 
-const User = require('./models/user')
-
-const user = new User({
-    name: 'Haamed'
-})
-
-try {
-    user.save()
-} catch (e) {
-    log('Error ', e)
-}
+app.use(userRouter)
