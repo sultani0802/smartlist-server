@@ -21,7 +21,7 @@ router.post('/users', async (req, res) => {
 
     try {
         await user.save()                   // Try to save the Document
-
+        
         res.status(201).send( {             // Respond with 201 status
             user                                // And user object
         })

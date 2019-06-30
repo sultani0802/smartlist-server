@@ -65,6 +65,24 @@ userSchema.pre('save', async function (next) {
 })
 
 
+/**
+ * Description:
+ *      Anytime our server sends the User document back in a response this method     *      will be run.
+ *      This method filters out the password because it is confidential.
+ *
+ * Note: This does not affect or change what is actually in the DB
+ * Returns:
+ *      A modified copy of the User Document
+ */
+userSchema.methods.toJSON = function () {
+    const user = this                   // Reference to the User Document
+    const publicUser = user.toObject()  // Create a copy and convert to js object
+
+    delete publicUser.password          // Remove the password from the copy
+
+    return publicUser                   // Return the modified copy
+}
+
 const User = mongoose.model('User', userSchema)
 
 module.exports = User
