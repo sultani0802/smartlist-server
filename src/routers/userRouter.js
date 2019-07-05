@@ -8,6 +8,9 @@ const router = new express.Router()
 const User = require('../models/user')
 
 
+        /**
+        * POST REQUESTS
+        */
 
 /**
  * Description:
@@ -29,6 +32,30 @@ router.post('/users', async (req, res) => {
         res.status(400).send(e)
     }
 })
+
+/**
+ * Description:
+ *      Logs the user in by finding a matching pair in the DB
+ * 
+ * Parameters (in body of the request):
+ *      email: The user's email
+ *      password: the corresponding password
+ */
+router.post('/users/login', async (req, res) => {
+    try {
+        // Try to find the User Document using our statics function
+        const user = await User.findByCredentials(req.body.email, req.body.password)
+
+        res.send(user)              // Respond with the matching User Document
+    } catch (e) {
+        res.status(400).send(e)     // Error
+    }
+})
+
+
+        /**
+        * DELETE REQEUSTS
+        */
 
 
 /**

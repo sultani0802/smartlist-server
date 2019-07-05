@@ -1,8 +1,8 @@
 const log = console.log
 
-/**
- *      Modules
- */
+        /**
+         *      Modules
+         */
 const mongoose = require('mongoose')
 const v = require('validator')
 const bcrpyt = require('bcryptjs')
@@ -41,9 +41,40 @@ const userSchema = new mongoose.Schema({
 
 
 
+        /**
+        * Model Functions
+        */
+
 /**
- *      Middleware
+ * Description:
+ *      Checks for a matching email and password
+ *      This is to be used to log the user in
+ * 
+ * Parameters:
+ *      email: The email the user is trying to log into
+ *      Pass: The password associated to that email
  */
+userSchema.statics.findByCredentials = async (email, pass) => {
+    const user = await User.findOne({email})                    // Find User Document using email
+
+    if (!user) {                                                // Throw error if no matching email is found
+        throw new Error('Email doesn\'t exist.')
+    }
+
+    const isMatch = await bcrpyt.compare(pass, user.password)   // Check if the pass is correct
+
+    if (!isMatch) {                                             // Throw error if password is wrong
+        throw new Error('Password is incorrect.')
+    }
+
+    return user                                                 // Otherwise, successful login
+}
+
+
+
+        /**
+         *      Middleware
+         */
 
  /**
   * Description:
@@ -83,6 +114,10 @@ userSchema.methods.toJSON = function () {
     return publicUser                   // Return the modified copy
 }
 
+
+
 const User = mongoose.model('User', userSchema)
+
+
 
 module.exports = User
