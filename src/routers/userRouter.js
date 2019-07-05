@@ -20,13 +20,15 @@ const User = require('../models/user')
  *      A JSON object from the request's body that contains essential user information
  */
 router.post('/users', async (req, res) => {
-    const user = new User(req.body)         // Create User Document
+    const user = new User(req.body)                     // Create User Document
 
     try {
-        await user.save()                   // Try to save the Document
+        await user.save()                               // Try to save the Document
+        const newToken = await user.generateAuthToken() // Generate auth token
         
-        res.status(201).send( {             // Respond with 201 status
-            user                                // And user object
+        res.status(201).send( {                         // Respond with 201 status
+            user,                                       // And user object
+            newToken                                    // and token
         })
     } catch (e) {
         res.status(400).send(e)
@@ -45,8 +47,9 @@ router.post('/users/login', async (req, res) => {
     try {
         // Try to find the User Document using our statics function
         const user = await User.findByCredentials(req.body.email, req.body.password)
+        const newToken = await user.generateAuthToken()
 
-        res.send(user)              // Respond with the matching User Document
+        res.send({user, newToken})              // Respond with the matching User Document
     } catch (e) {
         res.status(400).send(e)     // Error
     }

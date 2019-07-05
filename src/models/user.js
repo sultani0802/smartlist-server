@@ -6,7 +6,7 @@ const log = console.log
 const mongoose = require('mongoose')
 const v = require('validator')
 const bcrpyt = require('bcryptjs')
-
+const jwt = require('jsonwebtoken')
 
 /**
  *      Schema
@@ -34,7 +34,13 @@ const userSchema = new mongoose.Schema({
         required: true,
         trim: true,
         minlength: 8
-    }
+    },
+    tokens: [{
+        token: {
+            type: String,
+            required: true
+        }
+    }]
 }, {
     timestamps: true
 })
@@ -42,7 +48,7 @@ const userSchema = new mongoose.Schema({
 
 
         /**
-        * Model Functions
+        * Static Methods
         */
 
 /**
@@ -70,6 +76,31 @@ userSchema.statics.findByCredentials = async (email, pass) => {
     return user                                                 // Otherwise, successful login
 }
 
+
+
+        /**
+        * Model Methods
+        */
+
+/**
+ * Description:
+ *      Generates an auth token using JWT and adds it to the "tokens" array in the User Document
+ * 
+ * Returns: 
+ *      The token that was generated for this User
+ */
+userSchema.methods.generateAuthToken = async function () {
+    // Reference to User instance's User Document
+    const user = this
+    // Create a token 
+    const token = jwt.sign({_id:user._id.toString()}, process.env.JWT_SECRET)
+
+    user.tokens = user.tokens.concat({ token })     // Add the token to the user's "tokens" array
+    
+    await user.save()                               // Save the User Document
+
+    return token                                    // Return the token
+}
 
 
         /**
