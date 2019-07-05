@@ -35,6 +35,7 @@ router.post('/users', async (req, res) => {
     }
 })
 
+
 /**
  * Description:
  *      Logs the user in by finding a matching pair in the DB
