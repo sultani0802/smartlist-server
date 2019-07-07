@@ -3,6 +3,7 @@ const log = console.log
 // Libraries
 const express = require('express')
 const router = new express.Router()
+const auth = require('../middleware/auth')
 
 // Routers
 const User = require('../models/user')
@@ -53,6 +54,23 @@ router.post('/users/login', async (req, res) => {
         res.send({user, newToken})              // Respond with the matching User Document
     } catch (e) {
         res.status(400).send(e)     // Error
+    }
+})
+
+
+/**
+ * Description:
+ *      Logs the user out of their session by deleting the auth token from the User Document
+ */
+router.post('/users/logout', auth, async (req, res) => {
+    try {
+        req.user.token = undefined      // Clear the auth token
+
+        await req.user.save()           // Save the User Document
+
+        res.send('You have been successfully logged out.') // Respond to request
+    } catch (e) {
+        res.status(500).send(e)
     }
 })
 
