@@ -35,12 +35,10 @@ const userSchema = new mongoose.Schema({
         trim: true,
         minlength: 8
     },
-    tokens: [{
-        token: {
-            type: String,
-            required: true
-        }
-    }]
+    token : {
+        type: String,
+        required: true
+    }
 }, {
     timestamps: true
 })
@@ -95,7 +93,7 @@ userSchema.methods.generateAuthToken = async function () {
     // Create a token 
     const token = jwt.sign({_id:user._id.toString()}, process.env.JWT_SECRET)
 
-    user.tokens = user.tokens.concat({ token })     // Add the token to the user's "tokens" array
+    user.token = token     // Set the User Document's token
     
     await user.save()                               // Save the User Document
 
