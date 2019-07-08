@@ -68,7 +68,9 @@ router.post('/users/logout', auth, async (req, res) => {
 
         await req.user.save()           // Save the User Document
 
-        res.send('You have been successfully logged out.') // Respond to request
+        res.send({
+            "success" : "You have been successfully logged out"
+        }) // Respond to request
     } catch (e) {
         res.status(500).send(e)
     }
