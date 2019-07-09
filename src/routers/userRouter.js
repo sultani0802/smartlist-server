@@ -96,7 +96,7 @@ router.delete('/users/me/:id', async (req, res) => {
 
         res.send(req.user)          // Respond with deleted Document
     } catch (e) {
-        res.status(500).send(e)
+        res.status(500).send(new Error('Wrong email or password'))
     }
 })
 
