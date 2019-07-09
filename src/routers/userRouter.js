@@ -53,7 +53,7 @@ router.post('/users/login', async (req, res) => {
 
         res.send({user, newToken})              // Respond with the matching User Document
     } catch (e) {
-        res.status(400).send(e)     // Error
+        res.status(400).send(new Error('Invalid credentials'))     // Error
     }
 })
 
