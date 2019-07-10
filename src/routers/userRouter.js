@@ -80,6 +80,40 @@ router.post('/users/logout', auth, async (req, res) => {
 
 
         /**
+        * PATCH REQUESTS
+        */
+router.patch('/users/update/me', auth, (req, res) => {
+    const updates = Object.keys(req.body)                   // An array of the properties the user wants to update
+    const allowedUpdates = ['name', 'email', 'password']    // An array we will use to cross reference to, to determine what properites are modifiable
+
+    const isValidOperation = updates.every( (key) => {      // Go through each property the user wants to update
+        return allowedUpdates.includes(key)                     // Return false if at least 1 is not part of the modifiable properties
+    })
+
+    if (!isValidOperation) {                                // If the user tries to update an unmodifiable property
+        return res.status(400).send( {                          // Send error message
+            error : "You are trying to update a User property that is not allowed or the property doesn\'t exist."
+        })
+    }
+    
+    // If the request is valid, then the code below gets executed
+    try {
+        const user = req.user                               // Get the user object from the request (passed in by auth middleware)
+
+        updates.forEach( (update) => {                      // Go through each property the user wants to update
+            user[update] = req.body[update]                     // Change it to the new value
+        })
+
+        await user.save()                                   // Save the changes in the User Document
+
+        res.send(req.user)                                  // Respond with the newly modified User Document
+    } catch (e) {
+        res.status(400).send(e)                             // Otherwise, respond with an error
+    }
+})
+
+
+        /**
         * DELETE REQEUSTS
         */
 
