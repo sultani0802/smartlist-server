@@ -32,7 +32,9 @@ router.post('/users', async (req, res) => {
             newToken                                    // and token
         })
     } catch (e) {
-        res.status(400).send(e)
+        res.status(400).send({
+            "error" : e
+        })
     }
 })
 
