@@ -82,7 +82,7 @@ router.post('/users/logout', auth, async (req, res) => {
         /**
         * PATCH REQUESTS
         */
-router.patch('/users/update/me', auth, (req, res) => {
+router.patch('/users/update/me', auth, async (req, res) => {
     const updates = Object.keys(req.body)                   // An array of the properties the user wants to update
     const allowedUpdates = ['name', 'email', 'password']    // An array we will use to cross reference to, to determine what properites are modifiable
 
@@ -95,7 +95,7 @@ router.patch('/users/update/me', auth, (req, res) => {
             error : "You are trying to update a User property that is not allowed or the property doesn\'t exist."
         })
     }
-    
+
     // If the request is valid, then the code below gets executed
     try {
         const user = req.user                               // Get the user object from the request (passed in by auth middleware)
