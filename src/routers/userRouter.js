@@ -79,6 +79,16 @@ router.post('/users/logout', auth, async (req, res) => {
 })
 
 
+router.post('/users/auth', auth, async (req, res) => {
+    try {
+        res.send({
+            "success" : "Your token is valid."
+        })
+    } catch (e) {
+        res.status(401).send()
+    }
+})
+
         /**
         * PATCH REQUESTS
         */

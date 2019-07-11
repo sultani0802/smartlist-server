@@ -9,7 +9,7 @@ const auth = async (req, res, next) => {
     
     log('\nUser\'s request:')
     log('\tRequest type:  ' + req.method + '\n\tURL Path:  ' + req.path)
-
+    
     try {
         // Get the token in the header frmo the user's request
         const token = req.header('Authorization').replace('Bearer ', '')
